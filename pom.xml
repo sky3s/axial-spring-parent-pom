@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.axialworks</groupId>
+        <artifactId>root-pom</artifactId>
+        <version>0.0.1</version>
+    </parent>
+
+    <groupId>com.axialworks</groupId>
+    <artifactId>spring-parent-pom</artifactId>
+    <version>0.0.1</version>
+
+    <packaging>pom</packaging>
+
+    <name>Axial Spring Parent POM</name>
+    <description>Axial Spring Boot Parent POM</description>
+    <url>https://github.com/sky3s/axial-spring-parent-pom</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git://github.com/sky3s/axial-spring-parent-pom.git</connection>
+        <developerConnection>scm:git:ssh://github.com:sky3s/axial-spring-parent-pom.git</developerConnection>
+        <url>https://github.com/sky3s/axial-spring-parent-pom/tree/main</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Axial Works Developers</name>
+            <email>dev@axialworks.com</email>
+            <organization>Axial Works</organization>
+            <organizationUrl>http://axialworks.com/</organizationUrl>
+        </developer>
+    </developers>
+
+    <properties>
+
+    </properties>
+
+    <dependencyManagement>
+
+        <dependencies>
+
+            <!-- Spring Boot Configuration Annotation Processor -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-configuration-processor</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <!-- Swagger 3 / Open API Dependencies  -->
+            <!-- SpringDoc OpenAPI UI -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+
+            <!-- Spring Dependencies -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring-boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-log4j2</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <!-- Java Dependencies -->
+            <dependency>
+                <groupId>jakarta.servlet</groupId>
+                <artifactId>jakarta.servlet-api</artifactId>
+                <version>${jakarta-servlet-api.version}</version>
+            </dependency>
+
+        </dependencies>
+
+    </dependencyManagement>
+
+    <dependencies>
+
+        <!-- Spring Dependencies -->
+        <!-- Core starter, including auto-configuration support, logging and YAML -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+
+        <!-- Swagger 3 / Open API Dependencies  -->
+        <!-- SpringDoc OpenAPI UI -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <profiles>
+
+        <profile>
+            <id>legacyProfile</id>
+            <activation>
+                <property>
+                    <name>legacy-project</name>
+                    <value>true</value>
+                </property>
+            </activation>
+
+            <properties>
+                <!-- Spring Dependencies -->
+                <spring-boot.version>2.7.7</spring-boot.version>
+
+                <!-- Swagger 3 / Open API Dependencies  -->
+                <springdoc.version> 1.6.14</springdoc.version>
+
+            </properties>
+
+        </profile>
+
+        <profile>
+            <id>nonLegacyProfile</id>
+            <activation>
+                <property>
+                    <name>legacy-project</name>
+                    <value>!true</value>
+                </property>
+            </activation>
+
+            <properties>
+                <!-- Spring Dependencies -->
+                <spring-boot.version>3.0.1</spring-boot.version>
+
+                <!-- Swagger 3 / Open API Dependencies  -->
+                <springdoc.version>2.0.2</springdoc.version>
+
+            </properties>
+
+            <dependencies>
+
+                <!-- Swagger 3 / Open API Dependencies  -->
+                <!-- SpringDoc OpenAPI Starter WebMVC UI -->
+                <dependency>
+                    <groupId>org.springdoc</groupId>
+                    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                    <version>${springdoc.version}</version>
+                </dependency>
+
+            </dependencies>
+
+        </profile>
+
+        <profile>
+            <id>jarProfile</id>
+
+            <activation>
+                <property>
+                    <name>packaging</name>
+                    <value>jar</value>
+                </property>
+            </activation>
+
+            <dependencies>
+                <!-- Spring Boot Configuration Annotation Processor -->
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-configuration-processor</artifactId>
+                    <version>${spring-boot.version}</version>
+                </dependency>
+            </dependencies>
+
+            <build>
+                <plugins>
+
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>warProfile</id>
+
+            <activation>
+                <property>
+                    <name>packaging</name>
+                    <value>war</value>
+                </property>
+            </activation>
+
+            <properties>
+
+                <!-- Java Dependencies -->
+                <jakarta-servlet-api.version>6.0.0</jakarta-servlet-api.version>
+
+            </properties>
+
+            <dependencies>
+                <!-- Spring Dependencies -->
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
+                    <version>${spring-boot.version}</version>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-starter-logging</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-log4j2</artifactId>
+                    <version>${spring-boot.version}</version>
+                </dependency>
+
+                <!-- Java Dependencies -->
+                <dependency>
+                    <groupId>jakarta.servlet</groupId>
+                    <artifactId>jakarta.servlet-api</artifactId>
+                    <version>${jakarta-servlet-api.version}</version>
+                </dependency>
+            </dependencies>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <version>${spring-boot.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>repackage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+    </profiles>
+
+</project>
